@@ -2,6 +2,7 @@ package com.xpto.controlefinanceiro.config;
 
 import com.xpto.controlefinanceiro.common.apiError.ApiErrorResponse;
 
+import com.xpto.controlefinanceiro.modules.address.exceptions.AddressNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CnpjAlreadyExistsException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CpfAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,16 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleAddressNotFound(AddressNotFoundException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Address Not Found",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }
