@@ -1,8 +1,8 @@
 package com.xpto.controlefinanceiro.config;
 
 import com.xpto.controlefinanceiro.common.apiError.ApiErrorResponse;
-
 import com.xpto.controlefinanceiro.modules.address.exceptions.AddressNotFoundException;
+import com.xpto.controlefinanceiro.modules.account.exceptions.AccountNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CnpjAlreadyExistsException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CpfAlreadyExistsException;
 import org.springframework.http.HttpStatus;
@@ -32,17 +32,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
-        ApiErrorResponse error = new ApiErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-
     @ExceptionHandler(AddressNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleAddressNotFound(AddressNotFoundException ex) {
         ApiErrorResponse error = new ApiErrorResponse(
@@ -51,5 +40,25 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleAccountNotFound(AccountNotFoundException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Account Not Found",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleGeneric(Exception ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
