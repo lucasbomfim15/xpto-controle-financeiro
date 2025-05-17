@@ -25,11 +25,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final ModelMapper modelMapper;
+    private final InitialCustomerSetupService initialCustomerSetupService;
 
 
-    public CustomerServiceImpl(CustomerRepository repository, ModelMapper modelMapper) {
+    public CustomerServiceImpl(CustomerRepository repository, ModelMapper modelMapper, InitialCustomerSetupService initialCustomerSetupService) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.initialCustomerSetupService = initialCustomerSetupService;
     }
 
     @Override
@@ -53,6 +55,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         // Salva no banco
         Customer saved = repository.save(customer);
+
+        // Chama serviço para criar conta e movimentação inicial
+        initialCustomerSetupService.setupInitialAccountAndTransaction(saved);
 
         // Retorna DTO de resposta
         return CustomerMapper.toResponseDTO(saved);

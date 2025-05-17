@@ -5,12 +5,24 @@ import com.xpto.controlefinanceiro.modules.address.exceptions.AddressNotFoundExc
 import com.xpto.controlefinanceiro.modules.account.exceptions.AccountNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CnpjAlreadyExistsException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CpfAlreadyExistsException;
+import com.xpto.controlefinanceiro.modules.customer.exceptions.CustomerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleCustomerNotFound(CustomerNotFoundException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "Customer Not Found",
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(CpfAlreadyExistsException.class)
     public ResponseEntity<ApiErrorResponse> handleCpfAlreadyExists(CpfAlreadyExistsException ex) {
