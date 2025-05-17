@@ -31,6 +31,11 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance;
 
+    @Column(nullable = false, columnDefinition = "NUMERIC(19,2) DEFAULT 0.0")
+    private BigDecimal initialBalance = BigDecimal.ZERO;
+
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;

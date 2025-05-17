@@ -9,6 +9,7 @@ public record AccountResponseDTO(
         String agency,
         String number,
         BigDecimal balance,
+        BigDecimal initialBalance,
         UUID customerId,
         boolean active
 ) {}

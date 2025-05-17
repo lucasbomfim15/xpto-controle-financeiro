@@ -14,6 +14,7 @@ public class AccountMapper {
                 .agency(dto.agency())
                 .number(dto.number())
                 .balance(dto.balance())
+                .initialBalance(dto.balance())
                 .customer(customer)
                 .active(true)
                 .build();
@@ -26,6 +27,7 @@ public class AccountMapper {
                 account.getAgency(),
                 account.getNumber(),
                 account.getBalance(),
+                account.getInitialBalance(),
                 account.getCustomer().getId(),
                 account.isActive()
         );

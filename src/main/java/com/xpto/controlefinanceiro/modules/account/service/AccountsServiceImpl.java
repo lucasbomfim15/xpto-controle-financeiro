@@ -91,7 +91,7 @@ public class AccountsServiceImpl implements AccountsService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found with id: " + id));
 
-        // Exclusão lógica
+        // Exclusão lógica! nao deleta do banco de dados, apenas define o campo active da entidade como false.
         account.setActive(false);
         accountRepository.save(account);
     }
