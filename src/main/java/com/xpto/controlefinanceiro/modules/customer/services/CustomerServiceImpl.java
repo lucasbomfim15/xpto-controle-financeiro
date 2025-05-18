@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -111,6 +112,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer updated = repository.save(customer);
         return CustomerMapper.toResponseDTO(updated);
+    }
+
+
+    // Serviço da PL/SQL Function
+    @Override
+    public BigDecimal getSaldoCliente(UUID customerId) {
+        return repository.calcularSaldoCliente(customerId);
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,6 +53,13 @@ public class CustomerController {
     ) {
         CustomerResponseDTO updatedCustomer = customerService.update(id, dto);
         return ResponseEntity.ok(updatedCustomer);
+    }
+
+
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID id) {
+        BigDecimal balance = customerService.getSaldoCliente(id);
+        return ResponseEntity.ok(balance);
     }
 
 
