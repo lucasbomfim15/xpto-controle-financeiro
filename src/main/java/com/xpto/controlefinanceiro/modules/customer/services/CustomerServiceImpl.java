@@ -1,11 +1,13 @@
 package com.xpto.controlefinanceiro.modules.customer.services;
 
+import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerRequestDto;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerUpdateDTO;
 import com.xpto.controlefinanceiro.modules.customer.enums.CustomerType;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CnpjAlreadyExistsException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CpfAlreadyExistsException;
+import com.xpto.controlefinanceiro.modules.customer.exceptions.CustomerDeletionException;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CustomerNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.mappers.CustomerMapper;
 import com.xpto.controlefinanceiro.modules.customer.model.Customer;
@@ -24,14 +26,17 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
+    private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
     private final InitialCustomerSetupService initialCustomerSetupService;
 
 
-    public CustomerServiceImpl(CustomerRepository repository, ModelMapper modelMapper, InitialCustomerSetupService initialCustomerSetupService) {
+    public CustomerServiceImpl(CustomerRepository repository, ModelMapper modelMapper,
+                               InitialCustomerSetupService initialCustomerSetupService, AccountRepository accountRepository) {
         this.repository = repository;
         this.modelMapper = modelMapper;
         this.initialCustomerSetupService = initialCustomerSetupService;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -85,6 +90,12 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteById(UUID id) {
         if (!repository.existsById(id)) {
             throw new CustomerNotFoundException("Customer not found with id: " + id);
+        }
+
+        int countAccounts = accountRepository.countByCustomerId(id);
+
+        if (countAccounts > 0) {
+            throw new CustomerDeletionException("Não é permitido deletar cliente que possui contas associadas.");
         }
         repository.deleteById(id);
     }
