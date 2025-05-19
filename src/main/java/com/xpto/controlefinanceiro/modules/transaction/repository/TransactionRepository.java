@@ -12,4 +12,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     List<Transaction> findByAccountCustomerId(UUID customerId);
     List<Transaction> findByAccountIdAndDateLessThanEqual(UUID accountId, LocalDateTime date);
     void deleteAllByAccountId(UUID id);
+
+    boolean existsByAccountId(UUID id);
 }

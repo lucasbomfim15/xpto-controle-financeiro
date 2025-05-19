@@ -10,6 +10,7 @@ import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CustomerNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.model.Customer;
 import com.xpto.controlefinanceiro.modules.customer.repository.CustomerRepository;
+import com.xpto.controlefinanceiro.modules.transaction.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,12 @@ public class AccountsServiceImpl implements AccountsService {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
+    private final TransactionRepository transactionRepository;
 
-    public AccountsServiceImpl(AccountRepository accountRepository, CustomerRepository customerRepository) {
+    public AccountsServiceImpl(AccountRepository accountRepository, CustomerRepository customerRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.customerRepository = customerRepository;
+        this.transactionRepository = transactionRepository;
     }
 
 
@@ -70,10 +73,10 @@ public class AccountsServiceImpl implements AccountsService {
         Account account = accountRepository.findById(id)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found with id: " + id));
 
-//        Implementar isso após terminar a entidade de transactions!!!!
-//        if (transactionRepository.existsByAccountId(id)) {
-//            throw new IllegalStateException("Cannot update account with existing transactions.");
-//        }
+
+        if (transactionRepository.existsByAccountId(id)) {
+            throw new IllegalStateException("Cannot update account with existing transactions.");
+        }
 
 
         account.setBank(dto.bank());
