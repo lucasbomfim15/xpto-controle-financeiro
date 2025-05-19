@@ -8,6 +8,7 @@ import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
 import com.xpto.controlefinanceiro.modules.customer.exceptions.CustomerNotFoundException;
 import com.xpto.controlefinanceiro.modules.customer.model.Customer;
 import com.xpto.controlefinanceiro.modules.customer.repository.CustomerRepository;
+import com.xpto.controlefinanceiro.modules.transaction.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,12 +24,16 @@ class AccountsServiceImplTest {
     private AccountRepository accountRepository;
     private CustomerRepository customerRepository;
     private AccountsServiceImpl accountsService;
+    private TransactionRepository transactionRepository;
+
+
 
     @BeforeEach
     void setUp() {
         accountRepository = mock(AccountRepository.class);
         customerRepository = mock(CustomerRepository.class);
-        accountsService = new AccountsServiceImpl(accountRepository, customerRepository);
+        transactionRepository = mock(TransactionRepository.class);
+        accountsService = new AccountsServiceImpl(accountRepository, customerRepository, transactionRepository);
     }
 
     @Test
@@ -125,6 +130,7 @@ class AccountsServiceImplTest {
         AccountUpdateDTO updateDTO = new AccountUpdateDTO("New Bank", "New Agency", "New Number", BigDecimal.TEN);
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(transactionRepository.existsByAccountId(accountId)).thenReturn(false); // Mocka aqui para evitar exceção
         when(accountRepository.save(any(Account.class))).thenAnswer(i -> i.getArgument(0));
 
         var updated = accountsService.update(accountId, updateDTO);
