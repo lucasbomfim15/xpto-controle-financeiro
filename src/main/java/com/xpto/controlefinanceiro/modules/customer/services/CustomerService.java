@@ -1,5 +1,6 @@
 package com.xpto.controlefinanceiro.modules.customer.services;
 
+import com.xpto.controlefinanceiro.modules.address.dtos.AddressResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerRequestDto;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerUpdateDTO;
@@ -15,5 +16,6 @@ public interface CustomerService {
     void deleteById(UUID id);
     CustomerResponseDTO update(UUID id,CustomerUpdateDTO dto);
     BigDecimal getSaldoCliente(UUID customerId);
+    List<AddressResponseDTO> getAddressesForCustomer(UUID customerId);
 
 }

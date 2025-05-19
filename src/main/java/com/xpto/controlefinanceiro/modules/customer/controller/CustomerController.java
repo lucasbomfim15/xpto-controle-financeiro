@@ -1,6 +1,7 @@
 package com.xpto.controlefinanceiro.modules.customer.controller;
 
 import com.xpto.controlefinanceiro.common.apiError.ApiErrorResponse;
+import com.xpto.controlefinanceiro.modules.address.dtos.AddressResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerRequestDto;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerUpdateDTO;
@@ -109,6 +110,12 @@ public class CustomerController {
     public ResponseEntity<BigDecimal> getBalance(@PathVariable UUID id) {
         BigDecimal balance = customerService.getSaldoCliente(id);
         return ResponseEntity.ok(balance);
+    }
+
+    @GetMapping("/{id}/addresses")
+    public ResponseEntity<List<AddressResponseDTO>> getCustomerAddresses(@PathVariable UUID id) {
+        List<AddressResponseDTO> addresses = customerService.getAddressesForCustomer(id);
+        return ResponseEntity.ok(addresses);
     }
 
 
