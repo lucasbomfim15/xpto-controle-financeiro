@@ -1,12 +1,14 @@
 package com.xpto.controlefinanceiro.modules.address.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
 import com.xpto.controlefinanceiro.modules.address.dtos.AddressRequestDTO;
 import com.xpto.controlefinanceiro.modules.address.model.Address;
 import com.xpto.controlefinanceiro.modules.address.repository.AddressRepository;
 import com.xpto.controlefinanceiro.modules.customer.enums.CustomerType;
 import com.xpto.controlefinanceiro.modules.customer.model.Customer;
 import com.xpto.controlefinanceiro.modules.customer.repository.CustomerRepository;
+import com.xpto.controlefinanceiro.modules.transaction.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,12 @@ class AddressIntegrationTest {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     private UUID customerId;
 
 
@@ -53,6 +61,8 @@ class AddressIntegrationTest {
 
     @BeforeEach
     void setup() {
+        transactionRepository.deleteAll();
+        accountRepository.deleteAll();
         addressRepository.deleteAll();
         customerRepository.deleteAll();
 

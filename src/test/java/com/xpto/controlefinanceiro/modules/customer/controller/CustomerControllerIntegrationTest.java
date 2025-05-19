@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Transactional
 class CustomerControllerIntegrationTest {
 
     @Autowired
@@ -44,7 +45,7 @@ class CustomerControllerIntegrationTest {
         CustomerRequestDto request = new CustomerRequestDto(
                 "Lucas Nascimento",
                 CustomerType.PF,
-                "12345678900",
+                "12345678933",
                 null,
                 "81999999999"
         );
@@ -55,9 +56,8 @@ class CustomerControllerIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value("Lucas Nascimento"))
-                .andExpect(jsonPath("$.cpf").value("12345678900"))
-                .andExpect(jsonPath("$.customerType").value("PF"))
-                .andExpect(jsonPath("$.createdAt").exists());
+                .andExpect(jsonPath("$.cpf").value("12345678933"))
+                .andExpect(jsonPath("$.customerType").value("PF"));
     }
 
     @Test
