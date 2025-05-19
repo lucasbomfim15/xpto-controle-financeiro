@@ -1,6 +1,7 @@
 package com.xpto.controlefinanceiro.modules.customer.services;
 
 import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
+import com.xpto.controlefinanceiro.modules.address.repository.AddressRepository;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerRequestDto;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerUpdateDTO;
@@ -24,15 +25,17 @@ class CustomerServiceImplTest {
 
     private CustomerRepository repository;
     private AccountRepository accountRepository;
+    private AddressRepository addressRepository;
     private InitialCustomerSetupService initialSetupService;
     private CustomerServiceImpl service;
 
     @BeforeEach
     void setUp() {
         repository = mock(CustomerRepository.class);
-        accountRepository = mock(AccountRepository.class);  // novo mock para AccountRepository
+        accountRepository = mock(AccountRepository.class);
+        addressRepository = mock(AddressRepository.class);
         initialSetupService = mock(InitialCustomerSetupService.class);
-        service = new CustomerServiceImpl(repository, initialSetupService, accountRepository);
+        service = new CustomerServiceImpl(repository, initialSetupService, accountRepository, addressRepository);
     }
 
     @Test

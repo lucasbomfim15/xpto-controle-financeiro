@@ -1,6 +1,8 @@
 package com.xpto.controlefinanceiro.modules.customer.services;
 
 import com.xpto.controlefinanceiro.modules.account.repository.AccountRepository;
+import com.xpto.controlefinanceiro.modules.address.dtos.AddressResponseDTO;
+import com.xpto.controlefinanceiro.modules.address.repository.AddressRepository;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerRequestDto;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerResponseDTO;
 import com.xpto.controlefinanceiro.modules.customer.dtos.CustomerUpdateDTO;
@@ -28,14 +30,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final AccountRepository accountRepository;
+    private final AddressRepository addressRepository;
 
     private final InitialCustomerSetupService initialCustomerSetupService;
 
 
     public CustomerServiceImpl(CustomerRepository repository,
-                               InitialCustomerSetupService initialCustomerSetupService, AccountRepository accountRepository) {
+                               InitialCustomerSetupService initialCustomerSetupService, AccountRepository accountRepository,
+                               AddressRepository addressRepository) {
         this.repository = repository;
-
+        this.addressRepository = addressRepository;
         this.initialCustomerSetupService = initialCustomerSetupService;
         this.accountRepository = accountRepository;
     }
@@ -118,7 +122,18 @@ public class CustomerServiceImpl implements CustomerService {
     // Serviço da PL/SQL Function
     @Override
     public BigDecimal getSaldoCliente(UUID customerId) {
+        Customer customer = repository.findById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
+
         return repository.calcularSaldoCliente(customerId);
+    }
+
+    // Serviço da PL/SQL Function
+    public List<AddressResponseDTO> getAddressesForCustomer(UUID customerId) {
+        Customer customer = repository.findById(customerId)
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
+
+        return addressRepository.findAddressesByCustomerId(customerId);
     }
 
 

@@ -1,3 +1,9 @@
+-- ================================================
+-- Function: fn_calcula_saldo_cliente
+-- Description: Calcula o saldo total do cliente considerando
+--             transações de crédito e débito e saldo inicial.
+-- ================================================
+
 CREATE OR REPLACE FUNCTION fn_calcula_saldo_cliente(p_customer_id UUID)
 RETURNS NUMERIC AS $$
 DECLARE
@@ -23,5 +29,33 @@ FROM accounts a
 WHERE a.customer_id = p_customer_id;
 
 RETURN v_saldo;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ================================================
+-- Function: fn_enderecos_cliente
+-- Description: Retorna os endereços vinculados a um cliente.
+-- ================================================
+
+CREATE OR REPLACE FUNCTION fn_enderecos_cliente(p_customer_id UUID)
+RETURNS TABLE (
+    id UUID,
+    street VARCHAR,
+    city VARCHAR,
+    state CHAR(2),
+    zip_code VARCHAR,
+    customer_id UUID
+) AS $$
+BEGIN
+RETURN QUERY
+SELECT
+    a.id,
+    a.street,
+    a.city,
+    a.state,
+    a.zip_code,
+    a.customer_id
+FROM addresses a
+WHERE a.customer_id = p_customer_id;
 END;
 $$ LANGUAGE plpgsql;
