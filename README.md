@@ -31,6 +31,28 @@ cd xpto-api
 docker-compose up -d
 ```
 
+## 🛠️ Executar função SQL no banco
+
+A aplicação depende da função fn_calcula_saldo_cliente para calcular o saldo atual dos clientes. Para criá-la:
+
+## ▶️ Usando Docker
+
+Execute o seguinte comando para rodar o script que cria a função no banco de dados:
+
+  docker exec -i xpto_postgres psql -U admin -d xpto_db < scripts/init-function.sql
+
+Esse comando acessa o container xpto_postgres e executa o arquivo scripts/init-function.sql dentro do banco xpto_db.
+
+## 💡 Alternativa manual
+Se preferir, você pode acessar o terminal interativo do banco com:
+  docker exec -it xpto_postgres psql -U admin -d xpto_db
+
+E dentro do psql, execute:
+  \i /caminho/absoluto/para/scripts/init-function.sql
+
+Substitua /caminho/absoluto/... pelo caminho completo até o arquivo .sql no seu sistema.
+
+
 A aplicação estará disponível em:  
 📍 `http://localhost:8080`  
 Swagger UI:  
