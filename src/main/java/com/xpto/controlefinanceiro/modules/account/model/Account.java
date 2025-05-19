@@ -31,7 +31,7 @@ public class Account {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @Column(nullable = false, columnDefinition = "NUMERIC(19,2) DEFAULT 0.0")
+    @Column(nullable = false)
     private BigDecimal initialBalance = BigDecimal.ZERO;
 
 

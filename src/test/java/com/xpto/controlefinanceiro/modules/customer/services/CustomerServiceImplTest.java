@@ -32,7 +32,7 @@ class CustomerServiceImplTest {
         repository = mock(CustomerRepository.class);
         accountRepository = mock(AccountRepository.class);  // novo mock para AccountRepository
         initialSetupService = mock(InitialCustomerSetupService.class);
-        service = new CustomerServiceImpl(repository, new ModelMapper(), initialSetupService, accountRepository);
+        service = new CustomerServiceImpl(repository, initialSetupService, accountRepository);
     }
 
     @Test

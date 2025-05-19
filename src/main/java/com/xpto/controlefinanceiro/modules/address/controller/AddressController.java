@@ -1,9 +1,8 @@
-package com.xpto.controlefinanceiro.modules.address;
+package com.xpto.controlefinanceiro.modules.address.controller;
 
 import com.xpto.controlefinanceiro.modules.address.dtos.AddressRequestDTO;
 import com.xpto.controlefinanceiro.modules.address.dtos.AddressResponseDTO;
 import com.xpto.controlefinanceiro.modules.address.dtos.AddressUpdateDTO;
-import com.xpto.controlefinanceiro.modules.address.repository.AddressRepository;
 import com.xpto.controlefinanceiro.modules.address.services.AddressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
